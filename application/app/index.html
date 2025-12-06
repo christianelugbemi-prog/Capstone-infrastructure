@@ -1,0 +1,432 @@
+cat > app/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capstone Project - Cloud Infrastructure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #a8edea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .tech-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .tech-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .tech-desc {
+            font-size: 0.95em;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .architecture-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+        }
+
+        .architecture-title {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #a8edea;
+        }
+
+        .architecture-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .status-board {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+        }
+
+        .status-title {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #a8edea;
+        }
+
+        .status-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .status-item {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .status-item.complete {
+            border-left-color: #4CAF50;
+        }
+
+        .status-label {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-label::before {
+            content: "✅";
+            font-size: 1.2em;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.8;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Capstone Project Success!</h1>
+            <div class="subtitle">Cloud Infrastructure & DevOps Deployment on AWS</div>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <span class="tech-icon">☁️</span>
+                <div class="tech-name">AWS Infrastructure</div>
+                <div class="tech-desc">Terraform-provisioned EC2, VPC, Security Groups with Infrastructure as Code</div>
+            </div>
+            <div class="tech-card">
+                <span class="tech-icon">⚓</span>
+                <div class="tech-name">Docker Containerization</div>
+                <div class="tech-desc">Containerized NGINX application with optimized Dockerfile and configurations</div>
+            </div>
+            <div class="tech-card">
+                <span class="tech-icon">⚙️</span>
+                <div class="tech-name">K3s Kubernetes</div>
+                <div class="tech-desc">Lightweight Kubernetes cluster for orchestration and management</div>
+            </div>
+            <div class="tech-card">
+                <span class="tech-icon">🔄</span>
+                <div class="tech-name">CI/CD Pipeline</div>
+                <div class="tech-desc">GitHub Actions automated build, test, and deployment pipeline</div>
+            </div>
+        </div>
+
+        <div class="architecture-section">
+            <h2 class="architecture-title">Architecture Workflow</h2>
+            <div class="architecture-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Infrastructure Provisioning</h3>
+                        <p>Terraform scripts deploy AWS EC2 instance, VPC, and security groups with proper networking configuration.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Containerization</h3>
+                        <p>Application is packaged into Docker containers with optimized NGINX configuration and security settings.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Orchestration</h3>
+                        <p>K3s Kubernetes cluster manages container deployment, scaling, and service exposure.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Automated Deployment</h3>
+                        <p>CI/CD pipeline automatically builds, tests, and deploys updates to the production environment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-board">
+            <h2 class="status-title">Project Status</h2>
+            <div class="status-items">
+                <div class="status-item complete">
+                    <div class="status-label">Infrastructure as Code</div>
+                    <p>Terraform configuration complete with modular, reusable code for AWS infrastructure.</p>
+                </div>
+                <div class="status-item complete">
+                    <div class="status-label">Containerized Application</div>
+                    <p>Docker container built and deployed with custom NGINX configuration and security headers.</p>
+                </div>
+                <div class="status-item complete">
+                    <div class="status-label">Kubernetes Deployment</div>
+                    <p>Application successfully deployed on K3s cluster with service exposure and load balancing.</p>
+                </div>
+                <div class="status-item complete">
+                    <div class="status-label">CI/CD Pipeline</div>
+                    <p>GitHub Actions workflow configured for automated testing and deployment.</p>
+                </div>
+                <div class="status-item complete">
+                    <div class="status-label">Public Accessibility</div>
+                    <p>Website publicly accessible via EC2 public IP with proper security group configurations.</p>
+                </div>
+                <div class="status-item complete">
+                    <div class="status-label">Cost Optimization</div>
+                    <p>Free Tier resources utilized with monitoring and cleanup procedures implemented.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>Capstone Project - Cloud Computing Certificate</h3>
+            <div class="footer-info">
+                <div class="info-item">
+                    <strong>Public URL:</strong><br>
+                    <span id="public-url" style="color: #a8edea; cursor: pointer;">
+                        Loading...
+                    </span>
+                </div>
+                <div class="info-item">
+                    <strong>Technologies:</strong><br>
+                    AWS, Terraform, Docker, K3s, GitHub Actions
+                </div>
+                <div class="info-item">
+                    <strong>Date:</strong><br>
+                    <span id="current-date">December 2025</span>
+                </div>
+                <div class="info-item">
+                    <strong>Student:</strong><br>
+                    Christian Elugbemi
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.9em;">
+                This project demonstrates end-to-end cloud infrastructure deployment using modern DevOps practices.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for status items
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusItems = document.querySelectorAll('.status-item');
+            statusItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Add hover effect to tech cards
+            const techCards = document.querySelectorAll('.tech-card');
+            techCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const icon = card.querySelector('.tech-icon');
+                    icon.style.transform = 'scale(1.2)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    const icon = card.querySelector('.tech-icon');
+                    icon.style.transform = 'scale(1)';
+                });
+            });
+
+            // Get current IP dynamically
+            function updatePublicUrl() {
+                // Get current hostname and port
+                const protocol = window.location.protocol;
+                const hostname = window.location.hostname;
+                const port = window.location.port;
+                
+                // For local development, show placeholder
+                if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                    document.getElementById('public-url').innerHTML = 
+                        'http://&lt;EC2-PUBLIC-IP&gt;:30080<br><small>(Update with your EC2 IP)</small>';
+                } else {
+                    // On the actual server, show the actual URL
+                    const url = port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
+                    const link = `<a href="${url}" style="color: #a8edea;">${url}</a>`;
+                    document.getElementById('public-url').innerHTML = link;
+                }
+                
+                // Set current date
+                const now = new Date();
+                const options = { month: 'long', year: 'numeric' };
+                document.getElementById('current-date').textContent = 
+                    now.toLocaleDateString('en-US', options);
+            }
+
+            // Update public URL when page loads
+            updatePublicUrl();
+
+            // Add click handler to copy IP
+            document.getElementById('public-url').addEventListener('click', function() {
+                const url = this.textContent;
+                if (url.includes('http')) {
+                    // Try to copy to clipboard
+                    navigator.clipboard.writeText(url).then(() => {
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '✅ Copied to clipboard!';
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                        }, 2000);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+EOF

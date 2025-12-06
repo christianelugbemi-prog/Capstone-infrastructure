@@ -1,0 +1,35 @@
+cat > deploy.sh << 'EOF'
+#!/bin/bash
+
+echo "📦 Deploying Capstone Application to Kubernetes..."
+
+# Create namespace
+echo "🔧 Creating namespace..."
+kubectl apply -f k8s-manifests/namespace.yaml
+
+# Deploy application
+echo "🚀 Deploying application..."
+kubectl apply -f k8s-manifests/deployment.yaml
+kubectl apply -f k8s-manifests/service.yaml
+
+# Or using kustomize (if you created kustomization.yaml)
+# kubectl apply -k k8s-manifests/
+
+# Wait for deployment to be ready
+echo "⏳ Waiting for pods to be ready..."
+sleep 10
+kubectl wait --for=condition=ready pod -l app=capstone-app -n capstone --timeout=120s
+
+# Display status
+echo "✅ Deployment Status:"
+kubectl get all -n capstone
+
+echo ""
+echo "🌐 Application Access:"
+echo "NodePort: 30080"
+echo "Use the node IP from: kubectl get nodes -o wide"
+echo "Access via: http://<NODE_IP>:30080"
+EOF
+
+# Make the script executable
+chmod +x deploy.sh

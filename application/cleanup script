@@ -1,0 +1,13 @@
+cat > cleanup.sh << 'EOF'
+#!/bin/bash
+
+echo "🧹 Cleaning up Capstone Application..."
+
+kubectl delete -f k8s-manifests/
+# OR delete entire namespace
+# kubectl delete namespace capstone
+
+echo "✅ Cleanup completed!"
+EOF
+
+chmod +x cleanup.sh

@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: capstone
+
+resources:
+- namespace.yaml
+- deployment.yaml
+- service.yaml
+
+# Common labels to add to all objects
+commonLabels:
+  project: capstone
+  managed-by: kustomize
+
+# Replace image tag dynamically
+images:
+- name: YOUR_DOCKERHUB_USERNAME/capstone-app
+  newTag: latest

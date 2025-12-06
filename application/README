@@ -1,0 +1,6 @@
+cat > README.md << 'EOF'
+# Capstone Application
+
+This directory contains the application code and Kubernetes manifests for the Capstone project.
+
+## Structure

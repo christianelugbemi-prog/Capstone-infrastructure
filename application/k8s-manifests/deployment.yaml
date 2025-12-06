@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-app
+  namespace: capstone
+  labels:
+    app: capstone-app
+    project: capstone
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: capstone-app
+  template:
+    metadata:
+      labels:
+        app: capstone-app
+        project: capstone
+    spec:
+      containers:
+      - name: capstone-app
+        image: YOUR_DOCKERHUB_USERNAME/capstone-app:latest  # FIX THIS
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"    # Fixed: "64Mi" not "debt"
+            cpu: "100m"       # Fixed: "100m" not "168m"
+          limits:
+            memory: "128Mi"   # Fixed: "128Mi" not "128M"
+            cpu: "250m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+        - name: VERSION
+          value: "1.0.0"
