@@ -1,0 +1,55 @@
+# Create .gitignore for Terraform
+@"
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files
+*.tfvars
+*.tfvars.json
+
+# Ignore override files
+*_override.tf
+*_override.tf.json
+
+# Include tfplan files
+*.tfplan
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore .terraform.lock.hcl
+.terraform.lock.hcl
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SSH keys
+*.pem
+id_rsa
+id_rsa.pub
+
+# Sensitive data
+secrets.auto.tfvars
+"@ | Out-File -FilePath .gitignore -Encoding UTF8
+
+# Add to your .gitignore
+Add-Content -Path .gitignore -Value "`n# Terraform variable files with sensitive data`nterraform.tfvars`n*.auto.tfvars"
+
+# Add .gitignore to Git
+git add .gitignore
